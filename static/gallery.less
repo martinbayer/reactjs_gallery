@@ -1,0 +1,122 @@
+@moveBackgroundColor: #C20A0A;
+@imageSelectPreviewHeight: 150px;
+@imageSelectPreviewHeightWithSpace: 200px;
+@activeImageMargin: 10px;
+ 
+
+ol, ul {
+	list-style: none;
+}
+.moveCreatorLeft(@backgroundColor){
+	.moveCreator("leftarrow.png", left, @backgroundColor);
+}
+
+.moveCreatorRight(@backgroundColor){
+	.moveCreator("rightarrow.png", right, @backgroundColor);
+}
+
+.moveCreator(@iconPath, @side, @backgroundColor){
+	background: @backgroundColor;
+	background-repeat:no-repeat;
+	background-position:@side center;
+	background-image: url(@iconPath);
+}
+
+html, body{
+  	height:95%;
+	background-color: black;
+}
+ 
+.galleryImage  {
+	position: absolute;
+	max-width: 100%; 
+	max-height: calc(~"100% - "@imageSelectPreviewHeightWithSpace);
+	margin: @activeImageMargin;
+	top:  50%;
+	left: 50%;
+	transform: translate(-50%, calc(~"-50% -" @imageSelectPreviewHeightWithSpace/2));
+	display: none;
+	&.active{
+		display:block;
+	}
+}
+.galleryImage img {
+	position: absolute;
+}
+.moveButton {
+	margin: @activeImageMargin;
+	padding: 0;
+	height: calc(~"100% -" @imageSelectPreviewHeightWithSpace);
+	position: absolute;
+	display: block;
+	width: 35%;
+	top: 0;
+	bottom: @imageSelectPreviewHeightWithSpace;
+	cursor: move;
+	&.left {
+		left: 0;
+		span{
+			display: none;
+			position: fixed;
+			width: 20px;
+			.moveCreatorLeft(@moveBackgroundColor);
+			
+			
+		}
+		&:hover span{
+			display: block;
+			left: 0;
+			top : @activeImageMargin;
+			bottom: @imageSelectPreviewHeightWithSpace;
+		}
+	}
+	
+	&.right {
+		right: 0;
+		span{
+			display: none;
+			position: fixed;
+			width: 20px;
+			.moveCreatorRight(@moveBackgroundColor);
+		}
+		&:hover span{
+			display: block;
+			right: 0;
+			top : @activeImageMargin;
+			bottom: @imageSelectPreviewHeightWithSpace;			
+		}
+	}
+}
+
+.imagepicker{
+	position:fixed;
+	bottom: 0;
+	height: @imageSelectPreviewHeightWithSpace;
+	overflow-x: hidden;
+	overflow-y: hidden;
+    white-space: nowrap;
+	width: 100%;
+	background-color: black;
+	.imagelist ul{
+		background-color: black;
+		height: 120px;	
+	}
+	.image{
+		cursor: pointer;
+		list-max: none;
+		display: inline-block;
+		*display: inline;
+    	zoom: 1;
+		height: @imageSelectPreviewHeight;
+		border: 1px solid black;
+		img{
+			max-height: @imageSelectPreviewHeight;
+			max-width: 300px;
+		}
+	}
+	.desaturate { 
+				-webkit-filter: grayscale(100%);
+				-moz-filter: grayscale(100%);
+				filter: grayscale(100%);
+			}
+}
