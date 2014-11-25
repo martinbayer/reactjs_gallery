@@ -1,6 +1,11 @@
 var SELECTION_PART_HEIGHT = 150;
 /* let the image to have at least 10px empty space around */
 var ACTIVE_IMAGE_MARGIN = 10;
+
+var LEFT_ARROW_KEY_CODE = 37;
+
+var RIGHT_ARROW_KEY_CODE = 39;
+
 function ImageInformation(x, y, width, height){
 	this.x = x + ACTIVE_IMAGE_MARGIN;
 	this.y = y + ACTIVE_IMAGE_MARGIN;
@@ -14,7 +19,7 @@ var ImageClass = React.createClass({
 	}
 });
 var win = $(window);
-
+var doc = $(document);
 var EmptySpan = React.createClass({
 	render: function(){
 		return React.createElement('span');
@@ -72,6 +77,20 @@ var ImagesCreator = React.createClass({
 		that.updateWindowSize();
 		win.on('resize', function(){
 			that.updateWindowSize();
+		});
+
+		/* initialize left and right arrow keys to preview the photographs */
+		doc.keydown(function(event){
+			switch(event.keyCode){
+				/* keyCode for left arrow = 37 */
+				case LEFT_ARROW_KEY_CODE:
+					that.showPrevious();
+					break;
+				/* keyCode for right arrow = 39 */
+				case RIGHT_ARROW_KEY_CODE:
+					that.showNext();
+					break;
+			}
 		});
 	},
 
