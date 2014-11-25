@@ -108,6 +108,12 @@ var ImagesCreator = React.createClass({
 			/* do not move anywhere if there is only one photograph */
 		}
 	},
+
+	
+	selectImage: function(newIdx){
+		this.state.activeIdx = newIdx;
+		this.setState(this.state);
+	},
 	
 	handleNewIdx: function(newIdx){
 		/* set the new idx as the one of the state properties */
@@ -141,7 +147,7 @@ var ImagesCreator = React.createClass({
 
 		var MoveLeftInstance = React.createElement(MoveButton, {onClick: that.showPrevious, classNames: 'left'});
 		var MoveRightInstance = React.createElement(MoveButton, {onClick: that.showNext, classNames: 'right'});
-		var ImagePickerInstance = React.createElement(ImagePicker,{photographsPaths:photographsPaths, activeIdx: that.state.activeIdx});
+		var ImagePickerInstance = React.createElement(ImagePicker,{selectImage: that.selectImage, photographsPaths:photographsPaths, activeIdx: that.state.activeIdx});
 		return React.createElement('div',{className: 'fullsize'}, images, MoveLeftInstance, MoveRightInstance, ImagePickerInstance);
 	}
 
@@ -153,10 +159,11 @@ var ImagePicker = React.createClass({
 		var images = Object.keys(that.props.photographsPaths).map(function(index){
 			var src = that.props.photographsPaths[index];
 			var notActive = (index==that.props.activeIdx)?'':'desaturate';
-			var imagePicker = React.createElement('img',{key: src, src:src});
+			var imagePicker = React.createElement('img',{key: src, src:src, onClick: that.selectImage.bind(that,index)});
 			return React.createElement('li',{key: src, className: 'image '+notActive},imagePicker);
 		});
 
+		/* set the position of the list of the image to be selected */
 		var leftMove = -that.props.activeIdx*200;
 
 		var ulStyle = {
@@ -164,6 +171,10 @@ var ImagePicker = React.createClass({
 		};
 		var ulNode = React.createElement('ul',{style: ulStyle, className: 'imageList'},images);
 		return React.createElement('div',{className: 'imagepicker'},ulNode);
+	},
+
+	selectImage: function(newIdx){
+		this.props.selectImage(newIdx)
 	}
 });
 
